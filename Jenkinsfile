@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Clonage du dépôt') {
             steps {
-                sh "git clone https://github.com/WilliamLouiz/DockerTest.git && cd projet/"
+                sh "git clone https://github.com/WilliamLouiz/DockerTest.git "
                 sh 'ls $pwd'
             }
         }
