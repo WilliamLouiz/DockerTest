@@ -50,13 +50,13 @@ pipeline {
                     // Aller dans le répertoire cloné
                     dir('DockerTest') {
                         // Construire l'image Docker avec la version spécifiée
-                        sh "docker build -t ${DOCKER_IMAGE} ."
+                        sh "/usr/bin/docker build -t ${DOCKER_IMAGE} ."
                     }
                     // Se connecter au registre Docker
                     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                        sh "echo $PASS | /usr/bin/docker login -u $USER --password-stdin"
                         // Pousser l'image Docker vers le registre
-                        sh "docker push ${DOCKER_IMAGE}"
+                        sh "/usr/bin/docker push ${DOCKER_IMAGE}"
                     }
                 }
             }
@@ -66,12 +66,12 @@ pipeline {
             steps {
                 script {
                     // Supprimer l'image Docker locale
-                    sh "docker rmi ${DOCKER_IMAGE}"
+                    sh "/usr/bin/docker rmi ${DOCKER_IMAGE}"
                     // Arrêter et supprimer le conteneur Docker
-                    sh "docker stop web || true"
-                    sh "docker rm web || true"
+                    sh "/usr/bin/docker stop web || true"
+                    sh "/usr/bin/docker rm web || true"
                     // Démarrer un nouveau conteneur avec l'image mise à jour
-                    sh "docker run -d -t -p 8082:80 --name web ${DOCKER_IMAGE}"
+                    sh "/usr/bin/docker run -d -t -p 8082:80 --name web ${DOCKER_IMAGE}"
                 }
             }
         }
